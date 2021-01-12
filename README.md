@@ -1,9 +1,8 @@
-# ApexLegends
-# FiTH-g1gGLe
-# Website 		www.fithgaming.co.uk
-# Discord: 	https://discord.gg/pB3zJ3A
-# Youtube: 	https://www.youtube.com/FiTHGAMINGOFFICIAL
-# Facebook: 	https://www.facebook.com/gaming/FiTHGAMINGOFFICIAL/
+# FiTH-g1gGLe Apex Legends Configs
+# Website:www.fithgaming.co.uk
+# Discord:https://discord.gg/pB3zJ3A
+# Youtube:https://www.youtube.com/FiTHGAMINGOFFICIAL
+# Facebook:https://www.facebook.com/gaming/FiTHGAMINGOFFICIAL/
 
 My Settings for Apex Legends (Resolution 2560x1440 @ 165hz)
 
