@@ -9,3 +9,4 @@ Location of videoconfig.txt
 
 Location of autoexec config (default installion directory)
 C:\Program Files (x86)\Origin Games\Apex\cfg\autoexec.cfg
+
