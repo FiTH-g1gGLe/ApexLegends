@@ -1,4 +1,4 @@
-# FiTH-g1gGLe Apex Legends Configs
+# FiTH-g1gGLe Apex Legends Season 7 Configs
 # Website:www.fithgaming.co.uk
 # Discord:https://discord.gg/pB3zJ3A
 # Youtube:https://www.youtube.com/FiTHGAMINGOFFICIAL
