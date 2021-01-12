@@ -19,7 +19,7 @@ change these value's in videoconfig.txt to your fps
 	"setting.dvs_gpuframetime_min"		""
 	"setting.dvs_gpuframetime_max"		""
   
-  120fps
+  	120fps
 	min:8000
 	max:8200
 	
