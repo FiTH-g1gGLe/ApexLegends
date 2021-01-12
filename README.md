@@ -35,3 +35,4 @@ change these value's in videoconfig.txt to your fps
 	190fps
 	min:2900
 	max:5100
+	
