@@ -1,0 +1,41 @@
+"VideoConfig"
+{
+	"setting.cl_gib_allow"		"0"											//
+	"setting.cl_particle_fallback_base"		"-999999"						//
+	"setting.cl_particle_fallback_multiplier"		"-999999"				//
+	"setting.cl_ragdoll_maxcount"		"0"									//
+	"setting.cl_ragdoll_self_collision"		"0"								//
+	"setting.mat_forceaniso"		"16"									//
+	"setting.mat_mip_linear"		"0"										//
+	"setting.stream_memory"		"1000000"									//
+	"setting.mat_picmip"		"4"											//
+	"setting.particle_cpu_level"		"0"									//
+	"setting.r_createmodeldecals"		"0"									//
+	"setting.r_decals"		"0"												//
+	"setting.r_lod_switch_scale"		"9"									//
+	"setting.shadow_enable"		"0"											//
+	"setting.shadow_depth_dimen_min"		"0"								//
+	"setting.shadow_depth_upres_factor_max"		"0"							//
+	"setting.shadow_maxdynamic"		"0"										//
+	"setting.ssao_enabled"		"0"											//
+	"setting.ssao_downsample"		"0"										//
+	"setting.dvs_enable"		"0"											//	Enables Adaptive FPS. It won't work if you don't have this. Changing the min/max frametimes like other guides have you suggest does absolutely nothing if this value is not set to 1.
+	"setting.dvs_gpuframetime_min"		"6060"								//	Put the same value as gpuframetime_max here too. There's another guide that says something about dividing by 0.97 for the min, which is not advised for stable frametimes. We're trying to get the most stable frametime so giving the game leeway that causes uneven frametimes, aka stutter is not on our list.
+	"setting.dvs_gpuframetime_max"		"6060"								//	This is where you divide 1000 / fps to get the frametime value. See the table below where you can just copy-paste what fps you want it set for.
+	"setting.defaultres"		"2560"										//
+	"setting.defaultresheight"		"1440"									//
+	"setting.fullscreen"		"1"											//
+	"setting.nowindowborder"		"0"										//
+	"setting.volumetric_lighting"		"0"									//
+	"setting.mat_vsync_mode"		"3"										//	(3) This sets V-Sync to "Adaptive". Even without adaptive FPS this is the correct V-Sync setting when using Gsync/Freesync. Don't use 1/2 Adaptive.
+	"setting.mat_backbuffer_count"		"1"									//
+	"setting.mat_antialias_mode"		"12"								//
+	"setting.csm_enabled"		"0"											//
+	"setting.csm_coverage"		"0"											//
+	"setting.csm_cascade_res"		"16"									//
+	"setting.fadeDistScale"		"0.750000"									//
+	"setting.dvs_supersample_enable"		"0"								//
+	"setting.gamma"		"1.3"												//
+	"setting.configversion"		"7"											//
+	"mat_disable_bloom" "1"													//
+}
