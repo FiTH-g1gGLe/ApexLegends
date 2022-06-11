@@ -7,7 +7,7 @@
 My Settings for Apex Legends (Resolution 2560x1440 @ 165hz)
 
 Launch Param's
-+exec autoexec.cfg +fps_max unlimited -dev -freq 165 -preload
++exec autoexec.cfg +fps_max unlimited -dev -preload
 
 Location of videoconfig.txt
 %USERPROFILE%/Saved Games\Respawn\Apex\local\videoconfig.txt
