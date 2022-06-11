@@ -1,4 +1,4 @@
-# FiTH-g1gGLe Apex Legends Season 7 Configs
+# FiTH-g1gGLe Apex Legends Season 13 Configs
 # Website:www.fithgaming.co.uk
 # Discord:https://discord.gg/dUpNU9pfx7
 # Youtube:https://www.youtube.com/FiTHGAMINGOFFICIAL
