@@ -1,16 +1,16 @@
-# FiTH-g1gGLe Apex Legends Season 13 Configs
+# FiTH-g1gGLe Apex Legends Season 21 Configs
 # Website:www.fithgaming.co.uk
-# Discord:https://discord.gg/dUpNU9pfx7
+# Discord:https://discord.gg/Br7z7zBvFb
 # Youtube:https://www.youtube.com/FiTHGAMINGOFFICIAL
 # Facebook:https://www.facebook.com/gaming/FiTHGAMINGOFFICIAL
 
-My Settings for Apex Legends (Resolution 2560x1440 @ 165hz)
+My Settings for Apex Legends (Resolution 3840x2160 @ 240hz)
 
 Launch Param's
-+exec autoexec.cfg +fps_max unlimited -dev -preload
++exec autoexec.cfg -novid +fps_max unlimited
 
 Location of videoconfig.txt
-%USERPROFILE%/Saved Games\Respawn\Apex\local\videoconfig.txt
+%USERPROFILE%\Saved Games\Respawn\Apex\local\videoconfig.txt
 
 Location of autoexec config (default installion directory)
-C:\Program Files (x86)\Origin Games\Apex\cfg\autoexec.cfg
+<gamedir>\cfg\autoexec.cfg
