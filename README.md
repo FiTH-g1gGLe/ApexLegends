@@ -193,11 +193,6 @@ All three are set to 2560 × 1440. Change the four resolution lines to yours, or
 | [Autoexec](docs/autoexec.md) | What still works, what's blocked, and what to test next |
 | [File format history](docs/file-format-history.md) | Why old configs from 2020–2024 stop working |
 
-## ⚠️ About "FPS boost packs"
-
-Many FPS packs contain no game config at all. One popular pack we reviewed was entirely registry edits and scripts, including one that **turns off Windows exploit protections** (DEP, CFG, SEHOP) system-wide, with no measurable FPS benefit. Everything here is a game file you can read, and nothing touches Windows.
----
-
 <p align="center">
   <sub>Made by <b>FiTH-g1gGLe</b> · <a href="https://fithgaming.co.uk">fithgaming.co.uk</a> · Not affiliated with Respawn Entertainment or Electronic Arts.</sub>
 </p>
