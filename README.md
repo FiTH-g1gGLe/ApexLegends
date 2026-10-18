@@ -28,7 +28,7 @@
 
 Competitive Apex Legends settings that have been **tested in the game**, not copied from old guides. Every config here is a plain text file you can read line by line, and every claim below was checked in the Firing Range on the current version of the game.
 
-## 🎯 FiTH settings
+## 🎯 Settings
 
 <table>
 <tr>
@@ -128,7 +128,7 @@ Build your own `videoconfig.txt`. Every setting has a plain-English explanation,
 
 **Presets:** Competitive · Max FPS · Extreme · Balanced · Game Low · Game High
 
-[**Open it online →**](https://fithgaming.co.uk/apex/) &nbsp;·&nbsp; [download](tools/config-builder.html)
+[**Open it online →**](https://fithgaming.co.uk/apex/) &nbsp;·&nbsp;)
 
 </td>
 <td width="50%" valign="top">
@@ -142,7 +142,7 @@ A blind aim test that finds your sensitivity from short tracking and flick round
 - **ADS 2x**: SMG/AR tracking only
 - **ADS 3x**: marksman and sniper range
 
-[**Open it online →**](https://fithgaming.co.uk/apex-sensitivity/) &nbsp;·&nbsp; [download](tools/sensitivity-finder.html)
+[**Open it online →**](https://fithgaming.co.uk/apex-sensitivity/) &nbsp;·&nbsp;)
 
 </td>
 </tr>
@@ -151,8 +151,6 @@ A blind aim test that finds your sensitivity from short tracking and flick round
 <td><img src="assets/sensitivity-finder.png" alt="Sensitivity Finder"></td>
 </tr>
 </table>
-
-Both tools also come ready to paste into an Elementor HTML widget: [`tools/wordpress/`](tools/wordpress).
 
 ## 📁 Configs
 
@@ -198,9 +196,6 @@ All three are set to 2560 × 1440. Change the four resolution lines to yours, or
 ## ⚠️ About "FPS boost packs"
 
 Many FPS packs contain no game config at all. One popular pack we reviewed was entirely registry edits and scripts, including one that **turns off Windows exploit protections** (DEP, CFG, SEHOP) system-wide, with no measurable FPS benefit. Everything here is a game file you can read, and nothing touches Windows.
-
-The old Season 21 configs are kept in [`legacy/season-21/`](legacy/season-21) for reference. They use an outdated file format, so use the files above instead.
-
 ---
 
 <p align="center">
