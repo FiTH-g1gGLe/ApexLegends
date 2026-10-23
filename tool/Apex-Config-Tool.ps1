@@ -40,7 +40,7 @@ Set-StrictMode -Version 2
 #  Game constants - edit this block to support a future release
 # ---------------------------------------------------------------------------------------------
 $ToolName      = 'g1gGLe''z Apex Legends Performance Tool'
-$ToolVersion   = '1.1.1'
+$ToolVersion   = '1.1.2'
 $Links = @{
     Discord  = 'https://discord.gg/Br7z7zBvFb'
     YouTube  = 'https://www.youtube.com/user/FiTHGAMINGOFFICIAL'
@@ -656,8 +656,10 @@ function Invoke-Apply($File, $Rows, [bool]$ReadOnly) {
     $todo = @($Rows | Where-Object { $_.Status -eq 'change' })
     $steamRows = @($todo | Where-Object { $_.File -eq 'Steam' })
     if ($steamRows.Count -and (Test-SteamRunning)) { throw 'Steam is running. Close Steam first, or untick the Steam launch options box.' }
-    $paths = @($File.Path) + @($steamRows | ForEach-Object { $_.Path } | Select-Object -Unique)
-    $backup = New-Backup $paths
+    $paths = New-Object System.Collections.Generic.List[string]
+    $paths.Add($File.Path)
+    foreach ($r in $steamRows) { if (-not $paths.Contains($r.Path)) { $paths.Add($r.Path) } }
+    $backup = New-Backup $paths.ToArray()
 
     try {
         $ch = [ordered]@{}
@@ -1563,7 +1565,9 @@ $ui.btnApply.Add_Click({
     try {
         Update-Preview
         $prefs = Read-Prefs
-        $rows = @($script:Rows)
+        # Copy with a loop: @($list) on a generic List throws "Argument types do not match" in click handlers on Windows PowerShell 5.1
+        $rows = New-Object System.Collections.Generic.List[object]
+        foreach ($r in $script:Rows) { $rows.Add($r) }
         $steamSkipped = $false
         if (@($rows | Where-Object { $_.File -eq 'Steam' -and $_.Status -eq 'change' }).Count -and (Test-SteamRunning)) {
             $ask = [Windows.MessageBox]::Show("Steam is running, and it overwrites launch options when it closes.`n`nClose Steam now so the FPS cap can be saved? (You can open it again straight after.)`n`nNo = apply everything else and skip the launch options.", $ToolName, 'YesNoCancel', 'Question')
@@ -1572,7 +1576,11 @@ $ui.btnApply.Add_Click({
                 $ui.tbStatus.Text = 'Closing Steam...'
                 if (-not (Stop-SteamCleanly)) { $steamSkipped = $true }
             } else { $steamSkipped = $true }
-            if ($steamSkipped) { $rows = @($rows | Where-Object { $_.File -ne 'Steam' }) }
+            if ($steamSkipped) {
+                $keep = New-Object System.Collections.Generic.List[object]
+                foreach ($r in $rows) { if ($r.File -ne 'Steam') { $keep.Add($r) } }
+                $rows = $keep
+            }
         }
         $b = Invoke-Apply $script:File $rows $prefs.ReadOnly
         Update-Lock
