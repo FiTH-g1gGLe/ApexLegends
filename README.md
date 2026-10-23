@@ -130,7 +130,7 @@ Even at the menu's lowest preset, Apex keeps **sun shadows on** (`csm_enabled 1`
 **Run it**
 
 1. **[Download the repo](https://github.com/FiTH-g1gGLe/ApexLegends/archive/refs/heads/main.zip)** and unzip it.
-2. Open the `tool` folder and double-click **`Run Apex Config Tool.cmd`**.
+2. Double-click **`Run Apex Config Tool.cmd`**.
 3. Check **YOUR RIG**, pick a **LOADOUT**, review **CHANGES TO APPLY**, and hit **APPLY**.
 
 > [!NOTE]
@@ -141,10 +141,10 @@ Even at the menu's lowest preset, Apex keeps **sun shadows on** (`csm_enabled 1`
 
 ```powershell
 # Show what would change without writing anything
-powershell -ExecutionPolicy Bypass -File .\tool\Apex-Config-Tool.ps1 -Silent -DryRun
+powershell -ExecutionPolicy Bypass -File .\Apex-Config-Tool.ps1 -Silent -DryRun
 
 # Apply a preset with no window (Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh)
-powershell -ExecutionPolicy Bypass -File .\tool\Apex-Config-Tool.ps1 -Silent -Preset Competitive
+powershell -ExecutionPolicy Bypass -File .\Apex-Config-Tool.ps1 -Silent -Preset Competitive
 ```
 
 Backups are kept in `%LOCALAPPDATA%\ApexConfigTool\backups`.
