@@ -40,7 +40,7 @@ Set-StrictMode -Version 2
 #  Game constants - edit this block to support a future release
 # ---------------------------------------------------------------------------------------------
 $ToolName      = 'g1gGLe''z Apex Legends Performance Tool'
-$ToolVersion   = '1.1.0'
+$ToolVersion   = '1.1.1'
 $Links = @{
     Discord  = 'https://discord.gg/Br7z7zBvFb'
     YouTube  = 'https://www.youtube.com/user/FiTHGAMINGOFFICIAL'
@@ -1391,6 +1391,18 @@ foreach ($n in 'lnkDiscord','lnkYouTube','lnkFacebook','lnkSteam','lnkWeb') {
     $ui[$n].Add_Click({ param($s, $e) try { Start-Process ([string]$s.Tag) } catch { } })
 }
 
+function Set-CheckBox($Box, [bool]$On) {
+    $Box.SetValue([System.Windows.Controls.Primitives.ToggleButton]::IsCheckedProperty, [object]$On)
+}
+
+# Error text with where it happened, so a screenshot is enough to fix it
+function Get-ErrorText($Err) {
+    $msg = $Err.Exception.Message
+    $line = $Err.InvocationInfo.ScriptLineNumber
+    if ($line) { $msg += "`n`n(line $line)" }
+    return $msg
+}
+
 function Select-ComboTag($Combo, [string]$Tag) {
     foreach ($i in $Combo.Items) { if ([string]$i.Tag -eq $Tag) { $Combo.SelectedItem = $i; return } }
     $Combo.SelectedIndex = 0
@@ -1425,7 +1437,7 @@ function Update-SteamInfo {
         $ui.chkSteam.IsEnabled = $true
     } else {
         $ui.tbSteam.Text = 'Steam: Apex not found (EA app? Copy the cap from the notes into its launch options)'
-        $ui.chkSteam.IsChecked = $false; $ui.chkSteam.IsEnabled = $false
+        Set-CheckBox $ui.chkSteam $false; $ui.chkSteam.IsEnabled = $false
     }
 }
 
@@ -1461,7 +1473,9 @@ function Set-SlidersFromFile {
     $vol = ConvertTo-Num $(if ($script:File.Values.Contains('sound_volume')) { $script:File.Values['sound_volume'] } else { '1' })
     if ($null -eq $vol) { $vol = 1 }
     $script:VolStart = [int][math]::Round([math]::Min(100, [math]::Max(0, $vol * 100)))
-    $ui.slBright.Value = $script:BrightStart; $ui.slVol.Value = $script:VolStart
+    # SetValue with an exact [double]: a plain int here throws "Argument types do not match" inside click handlers on Windows PowerShell 5.1
+    $ui.slBright.SetValue([System.Windows.Controls.Primitives.RangeBase]::ValueProperty, [double]$script:BrightStart)
+    $ui.slVol.SetValue([System.Windows.Controls.Primitives.RangeBase]::ValueProperty, [double]$script:VolStart)
 }
 
 function Update-Backups {
@@ -1537,7 +1551,7 @@ $ui.cbCap.SelectedIndex = 0
 $ui.chkSteam.IsChecked = $true
 Update-SteamInfo
 Set-SlidersFromFile
-$ui.chkRO.IsChecked = (Get-Item -LiteralPath $File.Path).IsReadOnly
+Set-CheckBox $ui.chkRO ([bool](Get-Item -LiteralPath $File.Path).IsReadOnly)
 Update-Backups
 
 foreach ($n in 'tbVram','tbThreads','tbRes','tbHz','tbCap') { $ui[$n].Add_LostFocus({ Update-Preview }) }
@@ -1577,7 +1591,7 @@ $ui.btnApply.Add_Click({
         }
         [Windows.MessageBox]::Show($msg, $ToolName, 'OK', 'Information') | Out-Null
     } catch {
-        [Windows.MessageBox]::Show($_.Exception.Message, $ToolName, 'OK', 'Error') | Out-Null
+        [Windows.MessageBox]::Show((Get-ErrorText $_), $ToolName, 'OK', 'Error') | Out-Null
     }
 })
 
@@ -1590,12 +1604,12 @@ $ui.btnRestore.Add_Click({
         Restore-Backup (Join-Path $BackupRoot $name)
         $script:File = Read-ApexFile $ConfigPath
         $script:Steam = Get-SteamConfigs
-        $ui.chkRO.IsChecked = (Get-Item -LiteralPath $ConfigPath).IsReadOnly
+        Set-CheckBox $ui.chkRO ([bool](Get-Item -LiteralPath $ConfigPath).IsReadOnly)
         Set-SlidersFromFile
         Update-Preview
         [Windows.MessageBox]::Show("Restored settings from $name.", $ToolName, 'OK', 'Information') | Out-Null
     } catch {
-        [Windows.MessageBox]::Show($_.Exception.Message, $ToolName, 'OK', 'Error') | Out-Null
+        [Windows.MessageBox]::Show((Get-ErrorText $_), $ToolName, 'OK', 'Error') | Out-Null
     }
 })
 
