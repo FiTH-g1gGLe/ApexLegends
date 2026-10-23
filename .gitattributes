@@ -1,3 +1,5 @@
 # Keep Windows line endings in game config files
 *.txt -text
 *.cfg -text
+*.ps1 -text
+*.cmd -text

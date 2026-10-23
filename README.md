@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="#%EF%B8%8F-desktop-tool"><b>Desktop Tool</b></a> ·
   <a href="https://fithgaming.co.uk/apex/"><b>Config Builder</b></a> ·
   <a href="https://fithgaming.co.uk/apex-sensitivity/"><b>Sensitivity Finder</b></a> ·
   <a href="#-fith-settings"><b>My Settings</b></a> ·
@@ -116,6 +117,40 @@ Even at the menu's lowest preset, Apex keeps **sun shadows on** (`csm_enabled 1`
 </tr>
 </table>
 
+## 🖥️ Desktop Tool
+
+**g1gGLe'z Apex Performance Tool** does the whole install for you. It finds your `videoconfig.txt`, detects your rig, shows every change before anything is written, and backs up your file first.
+
+- **Same presets as the Config Builder**, plus **g1gGLe's settings**. **Auto** picks one from your video memory and CPU.
+- **See every change first.** A live list shows each setting, what it is now and what it will become. Hover any row for what it does and **why**.
+- **Keeps what's yours.** Your brightness and master volume stay as they are unless you move the sliders, and only the values that need changing are touched.
+- **FPS cap into Steam for you.** Writes `+fps_max` to Apex's Steam launch options and keeps your other options, such as `+exec autoexec`. It closes Steam cleanly first if it needs to.
+- **One-click undo.** Every apply makes a timestamped backup, and it reads the files back after writing. If anything doesn't check out, your files are put back automatically.
+
+**Run it**
+
+1. **[Download the repo](https://github.com/FiTH-g1gGLe/ApexLegends/archive/refs/heads/main.zip)** and unzip it.
+2. Open the `tool` folder and double-click **`Run Apex Config Tool.cmd`**.
+3. Check **YOUR RIG**, pick a **LOADOUT**, review **CHANGES TO APPLY**, and hit **APPLY**.
+
+> [!NOTE]
+> Close Apex first. Launch the game once beforehand if you've never played on this PC, so `videoconfig.txt` exists.
+
+<details>
+<summary><b>Command line</b></summary>
+
+```powershell
+# Show what would change without writing anything
+powershell -ExecutionPolicy Bypass -File .\tool\Apex-Config-Tool.ps1 -Silent -DryRun
+
+# Apply a preset with no window (Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh, FiTH)
+powershell -ExecutionPolicy Bypass -File .\tool\Apex-Config-Tool.ps1 -Silent -Preset Competitive
+```
+
+Backups are kept in `%LOCALAPPDATA%\ApexConfigTool\backups`.
+
+</details>
+
 ## 🧰 Tools
 
 <table>
@@ -128,7 +163,7 @@ Build your own `videoconfig.txt`. Every setting has a plain-English explanation,
 
 **Presets:** Competitive · Max FPS · Extreme · Balanced · Game Low · Game High
 
-[**Open it online →**](https://fithgaming.co.uk/apex/) &nbsp;·&nbsp;)
+[**Open it online →**](https://fithgaming.co.uk/apex/)
 
 </td>
 <td width="50%" valign="top">
@@ -142,7 +177,7 @@ A blind aim test that finds your sensitivity from short tracking and flick round
 - **ADS 2x**: SMG/AR tracking only
 - **ADS 3x**: marksman and sniper range
 
-[**Open it online →**](https://fithgaming.co.uk/apex-sensitivity/) &nbsp;·&nbsp;)
+[**Open it online →**](https://fithgaming.co.uk/apex-sensitivity/)
 
 </td>
 </tr>
@@ -163,6 +198,8 @@ A blind aim test that finds your sensitivity from short tracking and flick round
 All three are set to 2560 × 1440. Change the four resolution lines to yours, or let the [Config Builder](https://fithgaming.co.uk/apex/) detect it.
 
 ## 🔧 Install
+
+The easy way is the [Desktop Tool](#%EF%B8%8F-desktop-tool). To install a file by hand:
 
 1. Close Apex Legends completely.
 2. Press <kbd>Win</kbd> + <kbd>R</kbd>, paste `%USERPROFILE%\Saved Games\Respawn\Apex\local` and press <kbd>Enter</kbd>.
