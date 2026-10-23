@@ -40,7 +40,7 @@ Set-StrictMode -Version 2
 #  Game constants - edit this block to support a future release
 # ---------------------------------------------------------------------------------------------
 $ToolName      = 'g1gGLe''z Apex Performance Tool'
-$ToolVersion   = '1.0.0'
+$ToolVersion   = '1.0.1'
 $Links = @{
     Discord  = 'https://discord.gg/Br7z7zBvFb'
     YouTube  = 'https://www.youtube.com/user/FiTHGAMINGOFFICIAL'
@@ -253,28 +253,98 @@ function Stop-SteamCleanly {
 # ---------------------------------------------------------------------------------------------
 #  Hardware detection (each step falls back to what the game itself recorded)
 # ---------------------------------------------------------------------------------------------
-function Get-VramGB([string]$GpuName) {
-    $best = 0
+# Built-in graphics on the CPU (Ryzen "Radeon Graphics", Intel UHD/Iris) - never the card you game on
+$IntegratedGpu = '^(AMD )?Radeon(\(TM\))? (Graphics|Vega|\d{3}M)|Intel\(R\) (UHD|Iris|HD) |Basic|Virtual|Parsec|Remote|Meta|Mirage|DisplayLink'
+
+function Get-GpuRank([string]$Name) {
+    if (-not $Name -or $Name -match $IntegratedGpu) { return 0 }
+    if ($Name -match 'NVIDIA|GeForce|RTX|GTX|Quadro|Radeon|Arc') { return 2 }
+    return 1
+}
+
+# Every graphics adapter Windows knows, with its real video memory (WMI caps VRAM at 4 GB, the registry doesn't).
+function Get-GpuList {
+    $list = New-Object System.Collections.Generic.List[object]
     try {
         $base = 'HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}'
         foreach ($k in @(Get-ChildItem -Path $base -ErrorAction SilentlyContinue | Where-Object { $_.PSChildName -match '^\d{4}$' })) {
             $p = Get-ItemProperty -Path $k.PSPath -ErrorAction SilentlyContinue
-            if (-not $p) { continue }
+            if (-not $p -or -not $p.PSObject.Properties['DriverDesc']) { continue }
+            $bytes = [uint64]0
             $q = $p.PSObject.Properties['HardwareInformation.qwMemorySize']
-            if (-not $q -or $null -eq $q.Value) { continue }
-            $desc = ''; if ($p.PSObject.Properties['DriverDesc']) { $desc = [string]$p.DriverDesc }
-            if ($GpuName -and $desc -and $desc -ne $GpuName) { continue }
-            $bytes = if ($q.Value -is [byte[]]) { [BitConverter]::ToUInt64($q.Value, 0) } else { [uint64]$q.Value }
-            if ($bytes -gt $best) { $best = $bytes }
+            if ($q -and $null -ne $q.Value) {
+                $bytes = $(if ($q.Value -is [byte[]]) { [BitConverter]::ToUInt64($q.Value, 0) } else { [uint64]$q.Value })
+            } else {
+                $d = $p.PSObject.Properties['HardwareInformation.MemorySize']
+                if ($d -and $null -ne $d.Value) { $bytes = $(if ($d.Value -is [byte[]]) { [uint64][BitConverter]::ToUInt32($d.Value, 0) } else { [uint64]$d.Value }) }
+            }
+            $list.Add([pscustomobject]@{ Name = [string]$p.DriverDesc; Bytes = $bytes })
         }
     } catch { }
-    if ($best -gt 0) { return [int][math]::Round($best / 1GB) }
-    try {   # NVIDIA fallback
-        $smi = Get-Command nvidia-smi -ErrorAction SilentlyContinue
-        if ($smi) {
-            $mib = & $smi.Source --query-gpu=memory.total --format=csv,noheader,nounits 2>$null | Select-Object -First 1
-            if ($mib) { return [int][math]::Round([double]$mib / 1024) }
+    if ($list.Count -eq 0) {
+        try { foreach ($c in @(Get-CimInstance Win32_VideoController)) { $list.Add([pscustomobject]@{ Name = [string]$c.Name; Bytes = [uint64]$c.AdapterRAM }) } } catch { }
+    }
+    return ,$list
+}
+
+# The gaming card: a dedicated GPU first, then the one with the most video memory.
+function Select-GamingGpu {
+    $all = Get-GpuList
+    $pick = $all | Sort-Object @{ Expression = { Get-GpuRank $_.Name }; Descending = $true }, @{ Expression = { $_.Bytes }; Descending = $true } | Select-Object -First 1
+    if (-not $pick) { return $null }
+    $vram = $null
+    if ($pick.Bytes -gt 0) { $vram = [int][math]::Round($pick.Bytes / 1GB); if ($vram -lt 1) { $vram = $null } }
+    if (-not $vram -and $pick.Name -match 'NVIDIA|GeForce|RTX|GTX') {
+        try {
+            $smi = Get-Command nvidia-smi -ErrorAction SilentlyContinue
+            if ($smi) {
+                $mib = & $smi.Source --query-gpu=memory.total --format=csv,noheader,nounits 2>$null | Select-Object -First 1
+                if ($mib) { $vram = [int][math]::Round([double]$mib / 1024) }
+            }
+        } catch { }
+    }
+    [pscustomobject]@{ Name = $pick.Name; VramGB = $vram }
+}
+
+# Refresh rate and resolution of the main monitor, straight from Windows' display settings.
+function Get-PrimaryDisplayMode {
+    try {
+        if (-not ('ApexTool.Display' -as [type])) {
+            Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+namespace ApexTool {
+  public static class Display {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct DEVMODE {
+      [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string dmDeviceName;
+      public short dmSpecVersion; public short dmDriverVersion; public short dmSize; public short dmDriverExtra;
+      public int dmFields; public int dmPositionX; public int dmPositionY; public int dmDisplayOrientation; public int dmDisplayFixedOutput;
+      public short dmColor; public short dmDuplex; public short dmYResolution; public short dmTTOption; public short dmCollate;
+      [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string dmFormName;
+      public short dmLogPixels; public int dmBitsPerPel; public int dmPelsWidth; public int dmPelsHeight;
+      public int dmDisplayFlags; public int dmDisplayFrequency;
+      public int dmICMMethod; public int dmICMIntent; public int dmMediaType; public int dmDitherType;
+      public int dmReserved1; public int dmReserved2; public int dmPanningWidth; public int dmPanningHeight;
+    }
+    [DllImport("user32.dll", CharSet = CharSet.Ansi)]
+    static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
+    public static int[] Current() {
+      DEVMODE dm = new DEVMODE(); dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+      if (!EnumDisplaySettings(null, -1, ref dm)) return null;
+      return new int[] { dm.dmPelsWidth, dm.dmPelsHeight, dm.dmDisplayFrequency };
+    }
+  }
+}
+"@
         }
+        $m = [ApexTool.Display]::Current()
+        if ($m -and $m[2] -gt 1) { return [pscustomobject]@{ Width = $m[0]; Height = $m[1]; Hz = $m[2] } }
+    } catch { }
+    # Fallback: whichever adapter is actually driving a screen
+    try {
+        $vc = @(Get-CimInstance Win32_VideoController | Where-Object { $_.CurrentRefreshRate -gt 1 }) | Sort-Object CurrentRefreshRate -Descending | Select-Object -First 1
+        if ($vc) { return [pscustomobject]@{ Width = [int]$vc.CurrentHorizontalResolution; Height = [int]$vc.CurrentVerticalResolution; Hz = [int]$vc.CurrentRefreshRate } }
     } catch { }
     return $null
 }
@@ -295,27 +365,16 @@ function Get-HardwareInfo($File) {
     if (-not $hw.Threads) { $hw.Threads = [Environment]::ProcessorCount }
     if (-not $hw.Cores)   { $hw.Cores = $hw.Threads }
 
-    try {
-        $g = @(Get-CimInstance Win32_VideoController | Where-Object { $_.Name -notmatch 'Basic|Virtual|Parsec|Remote|Meta' })
-        $pick = $g | Where-Object { $_.Name -match 'NVIDIA|GeForce|Radeon|Arc' } | Select-Object -First 1
-        if (-not $pick) { $pick = $g | Select-Object -First 1 }
-        if ($pick) {
-            $hw.GpuName = [string]$pick.Name
-            if ($pick.CurrentRefreshRate) { $hw.RefreshHz = [int]$pick.CurrentRefreshRate }
-        }
-    } catch { }
-    if ($hw.GpuName) { $hw.VramGB = Get-VramGB $hw.GpuName }
+    $gpu = Select-GamingGpu
+    if ($gpu) { $hw.GpuName = $gpu.Name; $hw.VramGB = $gpu.VramGB }
+    $disp = Get-PrimaryDisplayMode
+    if ($disp) { $hw.RefreshHz = $disp.Hz }
 
     # Resolution: the one the game is set to, else the desktop's
     $w = ConvertTo-PositiveInt $(if ($v.Contains('defaultres')) { $v['defaultres'] } else { $null })
     $h = ConvertTo-PositiveInt $(if ($v.Contains('defaultresheight')) { $v['defaultresheight'] } else { $null })
     if ($w -and $h) { $hw.Width = $w; $hw.Height = $h }
-    else {
-        try {
-            $vc = Get-CimInstance Win32_VideoController | Where-Object { $_.CurrentHorizontalResolution } | Select-Object -First 1
-            if ($vc) { $hw.Width = [int]$vc.CurrentHorizontalResolution; $hw.Height = [int]$vc.CurrentVerticalResolution }
-        } catch { }
-    }
+    elseif ($disp -and $disp.Width -gt 0) { $hw.Width = $disp.Width; $hw.Height = $disp.Height }
     try {
         $cs = Get-CimInstance Win32_ComputerSystem
         if ($cs.TotalPhysicalMemory) { $hw.RamGB = [int][math]::Round([double]$cs.TotalPhysicalMemory / 1GB) }
@@ -464,7 +523,7 @@ function Get-Plan($Hw, $Prefs, $File) {
         'cl_ragdoll_maxcount' = $s.ragdolls; 'cl_ragdoll_self_collision' = $s.ragdollCol
         'mat_forceaniso' = $aniso[0]; 'mat_mip_linear' = $aniso[1]; 'stream_memory' = $s.stream; 'mat_picmip' = $s.picmip
         'particle_cpu_level' = $s.particleCpu; 'r_createmodeldecals' = $s.decals; 'r_decals' = $(if ($s.decals) { 256 } else { 0 })
-        'r_lod_switch_scale' = (FTrim $s.lod)
+        'r_lod_switch_scale' = (F6 $s.lod)
         'shadow_enable' = $spot[0]; 'shadow_depth_dimen_min' = $spot[1]; 'shadow_depth_upres_factor_max' = $spot[2]; 'shadow_maxdynamic' = $spot[3]
         'dvs_enable' = 0
         'volumetric_lighting' = $s.volumetric; 'volumetric_fog' = 0
@@ -688,7 +747,7 @@ function New-TipXaml([string]$Title, [string]$Impact, [string]$Body, [string]$Re
 $Tips = @{
     tbCpu     = New-TipXaml 'CPU' 'DETECTED' 'Your processor, as reported by Windows.' 'Nothing to change here.'
     tbThreads = New-TipXaml 'CPU threads' 'FPS' 'Auto uses this with video memory to pick a preset. 4 threads or fewer gets Extreme.' 'Leave as detected.'
-    tbGpu     = New-TipXaml 'Graphics card' 'DETECTED' 'Your graphics card, as reported by Windows.' 'Should be your real card, not integrated graphics.'
+    tbGpu     = New-TipXaml 'Graphics card' 'DETECTED' 'Your gaming graphics card. Built-in CPU graphics are skipped when a dedicated card is fitted.' 'If this is wrong, type your real video memory in the box below.'
     tbVram    = New-TipXaml 'Video memory' 'STABILITY' 'Auto picks the preset from this: under 4 GB gets Extreme, 4-5 GB Max FPS, 6 GB and up Competitive. Apex stutters when textures don''t fit.' 'Check Task Manager > Performance > GPU > Dedicated GPU memory.'
     tbRes     = New-TipXaml 'Resolution' 'FPS' 'Filled in from your videoconfig.txt. Written to all four resolution lines in the file.' 'Your monitor''s native resolution.'
     tbHz      = New-TipXaml 'Refresh rate' 'STABILITY' 'Sets the FPS cap. Refresh rate minus 3 keeps G-Sync/FreeSync active and frame times even.' 'Your monitor''s maximum refresh rate. Check it in Windows Settings > Display > Advanced display.'
@@ -1101,9 +1160,9 @@ $PresetItemsXaml = '<ComboBoxItem Tag="Auto">Auto (picked for your rig)</ComboBo
           </StackPanel>
           <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,0,4,0">
             <TextBlock Style="{StaticResource Lbl}" Text="CPU"/>
-            <TextBox x:Name="tbCpu" IsReadOnly="True"><TextBox.ToolTip><ToolTip>$($Tips['tbCpu'])</ToolTip></TextBox.ToolTip></TextBox>
+            <TextBox x:Name="tbCpu" IsReadOnly="True" Focusable="False"><TextBox.ToolTip><ToolTip>$($Tips['tbCpu'])</ToolTip></TextBox.ToolTip></TextBox>
             <TextBlock Style="{StaticResource Lbl}" Text="Graphics card"/>
-            <TextBox x:Name="tbGpu" IsReadOnly="True"><TextBox.ToolTip><ToolTip>$($Tips['tbGpu'])</ToolTip></TextBox.ToolTip></TextBox>
+            <TextBox x:Name="tbGpu" IsReadOnly="True" Focusable="False"><TextBox.ToolTip><ToolTip>$($Tips['tbGpu'])</ToolTip></TextBox.ToolTip></TextBox>
             <Grid>
               <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
               <Grid.RowDefinitions><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
