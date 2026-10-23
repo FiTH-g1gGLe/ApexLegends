@@ -1,3 +1,4 @@
 @echo off
-:: Starts the Apex Config Tool without changing your PowerShell execution policy
-powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -File "%~dp0Apex-Config-Tool.ps1"
+rem Starts the Apex Config Tool window. Close Apex Legends before applying.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -File "%~dp0Apex-Config-Tool.ps1" %*
+if errorlevel 1 pause
