@@ -16,7 +16,7 @@
     With -Silent: show what would change without writing anything.
 
 .PARAMETER Preset
-    With -Silent: Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh or FiTH.
+    With -Silent: Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow or GameHigh.
 
 .PARAMETER ConfigPath
     Override the videoconfig.txt path (default: Saved Games\Respawn\Apex\local\videoconfig.txt).
@@ -39,8 +39,8 @@ Set-StrictMode -Version 2
 # ---------------------------------------------------------------------------------------------
 #  Game constants - edit this block to support a future release
 # ---------------------------------------------------------------------------------------------
-$ToolName      = 'g1gGLe''z Apex Performance Tool'
-$ToolVersion   = '1.0.1'
+$ToolName      = 'g1gGLe''z Apex Legends Performance Tool'
+$ToolVersion   = '1.1.0'
 $Links = @{
     Discord  = 'https://discord.gg/Br7z7zBvFb'
     YouTube  = 'https://www.youtube.com/user/FiTHGAMINGOFFICIAL'
@@ -385,10 +385,10 @@ function Get-HardwareInfo($File) {
 # ---------------------------------------------------------------------------------------------
 #  Presets - the same values as the online Config Builder (fithgaming.co.uk/apex)
 # ---------------------------------------------------------------------------------------------
-$PresetOrder = @('Competitive', 'MaxFPS', 'Extreme', 'Balanced', 'GameLow', 'GameHigh', 'FiTH')
+$PresetOrder = @('Competitive', 'MaxFPS', 'Extreme', 'Balanced', 'GameLow', 'GameHigh')
 $Presets = @{
-    Competitive = @{ Name = 'Competitive'; Desc = 'Everything low except what helps you see players. Model detail stays at full distance, textures stay fairly sharp, and sun shadows are off so enemies don''t hide in them.'
-        V = @{ stream = '1000000'; picmip = 1; filter = 'a4'; lod = 1; mapDetail = 1; fade = 1; effects = 'low'; particleCpu = 0; ragdolls = 0; ragdollCol = 0; gibs = 0; decals = 0; spot = 'off'; sun = 'off'; volumetric = 0; ssao = 0; aa = 0 } }
+    Competitive = @{ Name = 'Competitive (g1gGLe''s settings)'; Desc = 'g1gGLe''s own settings. Everything low except what helps you see players: maximum texture budget, sharper textures and model detail 0.75 keep distant enemies readable, and sun shadows are off so nobody hides in them. Tested in-game on 17 Oct 2026.'
+        V = @{ stream = '3000000'; picmip = 1; filter = 'a4'; lod = 0.75; mapDetail = 1; fade = 1; effects = 'low'; particleCpu = 0; ragdolls = 0; ragdollCol = 0; gibs = 0; decals = 0; spot = 'off'; sun = 'off'; volumetric = 0; ssao = 0; aa = 0 } }
     MaxFPS = @{ Name = 'Max FPS'; Desc = 'The game''s own Low, plus the extras the menu can''t do. Sun shadows and ragdoll physics off. Everything else stays within normal ranges.'
         V = @{ stream = '0'; picmip = 2; filter = 'bilinear'; lod = 0.6; mapDetail = 1; fade = 1; effects = 'low'; particleCpu = 0; ragdolls = 0; ragdollCol = 0; gibs = 0; decals = 0; spot = 'off'; sun = 'off'; volumetric = 0; ssao = 0; aa = 0 } }
     Extreme = @{ Name = 'Extreme'; Desc = 'Below the game''s Low, for weak PCs. Very blurry textures, the lowest model detail and small objects fading out early.'
@@ -399,8 +399,6 @@ $Presets = @{
         V = @{ stream = '0'; picmip = 2; filter = 'bilinear'; lod = 0.6; mapDetail = 1; fade = 1; effects = 'low'; particleCpu = 0; ragdolls = 0; ragdollCol = 1; gibs = 0; decals = 0; spot = 'off'; sun = 'low'; volumetric = 0; ssao = 0; aa = 0 } }
     GameHigh = @{ Name = 'Game High'; Desc = 'Exactly what the in-game menu writes at its highest setting, saved from the game on 17 Oct 2026.'
         V = @{ stream = '3000000'; picmip = 0; filter = 'a16'; lod = 2; mapDetail = 2; fade = 1; effects = 'high'; particleCpu = 2; ragdolls = 8; ragdollCol = 1; gibs = 1; decals = 1; spot = 'high'; sun = 'high'; volumetric = 1; ssao = 4; aa = 12 } }
-    FiTH = @{ Name = 'g1gGLe''s settings'; Desc = 'The FiTH competitive config from the GitHub page: maximum texture budget and sharper textures, model detail 0.75, sun shadows and ragdoll collision off. Tested in-game on 17 Oct 2026.'
-        V = @{ stream = '3000000'; picmip = 1; filter = 'a4'; lod = 0.75; mapDetail = 1; fade = 1; effects = 'low'; particleCpu = 0; ragdolls = 0; ragdollCol = 0; gibs = 0; decals = 0; spot = 'off'; sun = 'off'; volumetric = 0; ssao = 0; aa = 0 } }
 }
 
 # Picks a preset from the hardware. Returns the preset id and the reason.
@@ -1126,7 +1124,7 @@ $PresetItemsXaml = '<ComboBoxItem Tag="Auto">Auto (picked for your rig)</ComboBo
         <StackPanel VerticalAlignment="Center">
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="g1gGLe'z " FontSize="30" FontWeight="Black" Foreground="#FF5A1F"/>
-            <TextBlock Text="APEX PERFORMANCE" FontSize="30" FontWeight="Black" Foreground="White"/>
+            <TextBlock Text="APEX LEGENDS" FontSize="30" FontWeight="Black" Foreground="White"/>
           </StackPanel>
           <TextBlock Text="Tuned to YOUR rig  &#183;  tested in-game  &#183;  settings the menu can't reach" Foreground="#B9BFCA" FontSize="13" Margin="2,2,0,10"/>
           <StackPanel Orientation="Horizontal">

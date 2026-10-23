@@ -119,9 +119,9 @@ Even at the menu's lowest preset, Apex keeps **sun shadows on** (`csm_enabled 1`
 
 ## 🖥️ Desktop Tool
 
-**g1gGLe'z Apex Performance Tool** does the whole install for you. It finds your `videoconfig.txt`, detects your rig, shows every change before anything is written, and backs up your file first.
+**g1gGLe'z Apex Legends Performance Tool** does the whole install for you. It finds your `videoconfig.txt`, detects your rig, shows every change before anything is written, and backs up your file first.
 
-- **Same presets as the Config Builder**, plus **g1gGLe's settings**. **Auto** picks one from your video memory and CPU.
+- **Same presets as the Config Builder.** Competitive is g1gGLe's own settings. **Auto** picks a preset from your video memory and CPU.
 - **See every change first.** A live list shows each setting, what it is now and what it will become. Hover any row for what it does and **why**.
 - **Keeps what's yours.** Your brightness and master volume stay as they are unless you move the sliders, and only the values that need changing are touched.
 - **FPS cap into Steam for you.** Writes `+fps_max` to Apex's Steam launch options and keeps your other options, such as `+exec autoexec`. It closes Steam cleanly first if it needs to.
@@ -143,7 +143,7 @@ Even at the menu's lowest preset, Apex keeps **sun shadows on** (`csm_enabled 1`
 # Show what would change without writing anything
 powershell -ExecutionPolicy Bypass -File .\tool\Apex-Config-Tool.ps1 -Silent -DryRun
 
-# Apply a preset with no window (Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh, FiTH)
+# Apply a preset with no window (Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh)
 powershell -ExecutionPolicy Bypass -File .\tool\Apex-Config-Tool.ps1 -Silent -Preset Competitive
 ```
 
