@@ -1,20 +1,26 @@
 <p align="center">
-  <img src="assets/banner.png" alt="FiTH Gaming · Apex Legends · Pro configs, config builder, sensitivity finder" width="100%">
+  <img src="assets/banner.png" alt="FiTH Gaming · Apex Legends · Config Tool, Config Builder, Sensitivity Finder" width="100%">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Apex_Legends-configversion_10-f08a3c?style=for-the-badge&labelColor=0d1117" alt="configversion 10">
-  <img src="https://img.shields.io/badge/Verified_in--game-17_Oct_2026-6fcf8e?style=for-the-badge&labelColor=0d1117" alt="Verified in-game 17 Oct 2026">
-  <img src="https://img.shields.io/badge/Platform-PC_·_MnK-5cc8d6?style=for-the-badge&labelColor=0d1117" alt="PC, mouse and keyboard">
-  <img src="https://img.shields.io/badge/Installers-None-97a1b0?style=for-the-badge&labelColor=0d1117" alt="No installers">
+  <a href="https://github.com/FiTH-g1gGLe/ApexLegends/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD-CONFIG_TOOL-f08a3c?style=for-the-badge&logo=github&logoColor=white&labelColor=0d1117" alt="Download the Config Tool"></a>
+  <a href="https://fithgaming.co.uk/apex/"><img src="https://img.shields.io/badge/OPEN-CONFIG_BUILDER-f08a3c?style=for-the-badge&labelColor=0d1117" alt="Open the Config Builder"></a>
+  <a href="https://fithgaming.co.uk/apex-sensitivity/"><img src="https://img.shields.io/badge/OPEN-SENSITIVITY_FINDER-f08a3c?style=for-the-badge&labelColor=0d1117" alt="Open the Sensitivity Finder"></a>
 </p>
 
 <p align="center">
-  <a href="#%EF%B8%8F-desktop-tool"><b>Desktop Tool</b></a> ·
-  <a href="https://fithgaming.co.uk/apex/"><b>Config Builder</b></a> ·
-  <a href="https://fithgaming.co.uk/apex-sensitivity/"><b>Sensitivity Finder</b></a> ·
-  <a href="#-fith-settings"><b>My Settings</b></a> ·
-  <a href="#-install"><b>Install</b></a> ·
+  <img src="https://img.shields.io/badge/Apex_Legends-configversion_10-f08a3c?style=flat-square&labelColor=0d1117" alt="configversion 10">
+  <img src="https://img.shields.io/badge/Verified_in--game-17_Oct_2026-6fcf8e?style=flat-square&labelColor=0d1117" alt="Verified in-game 17 Oct 2026">
+  <img src="https://img.shields.io/badge/Platform-PC_·_MnK-5cc8d6?style=flat-square&labelColor=0d1117" alt="PC, mouse and keyboard">
+  <img src="https://img.shields.io/badge/Windows-10_|_11-0d1117?style=flat-square&logo=windows&logoColor=white" alt="Windows 10 and 11">
+  <img src="https://img.shields.io/badge/Installers-None-97a1b0?style=flat-square&labelColor=0d1117" alt="No installers">
+</p>
+
+<p align="center">
+  <a href="#config-tool"><b>Config Tool</b></a> ·
+  <a href="#config-builder"><b>Config Builder</b></a> ·
+  <a href="#sensitivity-finder"><b>Sensitivity Finder</b></a> ·
+  <a href="#my-settings"><b>My Settings</b></a> ·
   <a href="docs/settings-reference.md"><b>Every Setting Explained</b></a>
 </p>
 
@@ -27,8 +33,95 @@
 
 ---
 
+<img src="assets/game.png" alt="Apex Legends" width="110" align="right">
+
 Competitive Apex Legends settings that have been **tested in the game**, not copied from old guides. Every config here is a plain text file you can read line by line, and every claim below was checked in the Firing Range on the current version of the game.
 
+Three tools, one setup: **tune your PC** with the Config Tool, **build a file by hand** with the Config Builder, and **dial in your aim** with the Sensitivity Finder.
+
+## 🧰 The tools
+
+| | Tool | What it does | Where |
+|---|---|---|---|
+| 🖥️ | [**Config Tool**](#config-tool) | Detects your rig and applies the settings to your PC, with backups and one-click undo | Windows app · [download](https://github.com/FiTH-g1gGLe/ApexLegends/archive/refs/heads/main.zip) |
+| 🛠️ | [**Config Builder**](#config-builder) | Build your own `videoconfig.txt` setting by setting, then download it | [fithgaming.co.uk/apex](https://fithgaming.co.uk/apex/) |
+| 🎯 | [**Sensitivity Finder**](#sensitivity-finder) | A blind aim test that finds your hip-fire and ADS sensitivity | [fithgaming.co.uk/apex-sensitivity](https://fithgaming.co.uk/apex-sensitivity/) |
+
+<a id="config-tool"></a>
+### 🖥️ Config Tool
+
+**g1gGLe'z Apex Legends Performance Tool** does the whole install for you. It finds your `videoconfig.txt`, detects your rig, shows every change before anything is written, and backs up your file first.
+
+<p align="center">
+  <img src="assets/tool-changes.png" alt="The Config Tool listing each change, with a tooltip explaining what Texture filtering does and why" width="100%">
+  <sub><b>See every change before it happens.</b> Hover any row to learn what it does and why.</sub>
+</p>
+
+- **Same presets as the Config Builder.** Competitive is g1gGLe's own settings. **Auto** picks a preset from your video memory and CPU.
+- **Built for your rig.** Finds your real graphics card (not the CPU's built-in graphics), its video memory, your resolution and refresh rate.
+- **Keeps what's yours.** Your brightness and master volume stay as they are unless you move the sliders, and only the values that need changing are touched.
+- **FPS cap into Steam for you.** Writes `+fps_max` to Apex's Steam launch options and keeps your other options, such as `+exec autoexec`. It closes Steam cleanly first if it needs to.
+- **One-click undo.** Every apply makes a timestamped backup, and it reads the files back after writing. If anything doesn't check out, your files are put back automatically.
+
+<p align="center">
+  <img src="assets/tool-tuned.png" alt="The Config Tool showing Locked and Loaded: the config already matches the loadout" width="100%">
+  <sub><b>Locked and loaded.</b> Run it again any time to check your config is still tuned.</sub>
+</p>
+
+**Run it**
+
+1. **[Download the repo](https://github.com/FiTH-g1gGLe/ApexLegends/archive/refs/heads/main.zip)** and unzip it.
+2. Double-click **`Run Apex Config Tool.cmd`**.
+3. Check **YOUR RIG**, pick a **LOADOUT**, review **CHANGES TO APPLY**, and hit **APPLY**.
+
+> [!NOTE]
+> Close Apex first. Launch the game once beforehand if you've never played on this PC, so `videoconfig.txt` exists.
+
+<details>
+<summary><b>Command line</b></summary>
+
+```powershell
+# Show what would change without writing anything
+powershell -ExecutionPolicy Bypass -File .\Apex-Config-Tool.ps1 -Silent -DryRun
+
+# Apply a preset with no window (Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh)
+powershell -ExecutionPolicy Bypass -File .\Apex-Config-Tool.ps1 -Silent -Preset Competitive
+```
+
+Backups are kept in `%LOCALAPPDATA%\ApexConfigTool\backups`.
+
+</details>
+
+<a id="config-builder"></a>
+### 🛠️ Config Builder
+
+Build your own `videoconfig.txt` in the browser. Every setting has a plain-English explanation, its FPS impact, and the values the menu really writes. It detects your resolution, refresh rate and GPU, then you download the finished file.
+
+**Presets:** Competitive · Max FPS · Extreme · Balanced · Game Low · Game High
+
+<p align="center">
+  <img src="assets/config-builder.png" alt="Config Builder" width="100%">
+</p>
+
+[**Open the Config Builder →**](https://fithgaming.co.uk/apex/)
+
+<a id="sensitivity-finder"></a>
+### 🎯 Sensitivity Finder
+
+A blind aim test that finds your sensitivity from short tracking and flick rounds. It tests each sight the way it's used:
+
+- **Hip-fire**: tracking + flicks
+- **ADS 1x**: SMG/AR tracking + Wingman flicks
+- **ADS 2x**: SMG/AR tracking only
+- **ADS 3x**: marksman and sniper range
+
+<p align="center">
+  <img src="assets/sensitivity-finder.png" alt="Sensitivity Finder" width="100%">
+</p>
+
+[**Open the Sensitivity Finder →**](https://fithgaming.co.uk/apex-sensitivity/)
+
+<a id="my-settings"></a>
 ## 🎯 Settings
 
 <table>
@@ -117,76 +210,6 @@ Even at the menu's lowest preset, Apex keeps **sun shadows on** (`csm_enabled 1`
 </tr>
 </table>
 
-## 🖥️ Desktop Tool
-
-**g1gGLe'z Apex Legends Performance Tool** does the whole install for you. It finds your `videoconfig.txt`, detects your rig, shows every change before anything is written, and backs up your file first.
-
-- **Same presets as the Config Builder.** Competitive is g1gGLe's own settings. **Auto** picks a preset from your video memory and CPU.
-- **See every change first.** A live list shows each setting, what it is now and what it will become. Hover any row for what it does and **why**.
-- **Keeps what's yours.** Your brightness and master volume stay as they are unless you move the sliders, and only the values that need changing are touched.
-- **FPS cap into Steam for you.** Writes `+fps_max` to Apex's Steam launch options and keeps your other options, such as `+exec autoexec`. It closes Steam cleanly first if it needs to.
-- **One-click undo.** Every apply makes a timestamped backup, and it reads the files back after writing. If anything doesn't check out, your files are put back automatically.
-
-**Run it**
-
-1. **[Download the repo](https://github.com/FiTH-g1gGLe/ApexLegends/archive/refs/heads/main.zip)** and unzip it.
-2. Double-click **`Run Apex Config Tool.cmd`**.
-3. Check **YOUR RIG**, pick a **LOADOUT**, review **CHANGES TO APPLY**, and hit **APPLY**.
-
-> [!NOTE]
-> Close Apex first. Launch the game once beforehand if you've never played on this PC, so `videoconfig.txt` exists.
-
-<details>
-<summary><b>Command line</b></summary>
-
-```powershell
-# Show what would change without writing anything
-powershell -ExecutionPolicy Bypass -File .\Apex-Config-Tool.ps1 -Silent -DryRun
-
-# Apply a preset with no window (Auto, Competitive, MaxFPS, Extreme, Balanced, GameLow, GameHigh)
-powershell -ExecutionPolicy Bypass -File .\Apex-Config-Tool.ps1 -Silent -Preset Competitive
-```
-
-Backups are kept in `%LOCALAPPDATA%\ApexConfigTool\backups`.
-
-</details>
-
-## 🧰 Tools
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### Config Builder
-
-Build your own `videoconfig.txt`. Every setting has a plain-English explanation, its FPS impact, and the values the menu really writes. It detects your resolution, refresh rate and GPU in the browser.
-
-**Presets:** Competitive · Max FPS · Extreme · Balanced · Game Low · Game High
-
-[**Open it online →**](https://fithgaming.co.uk/apex/)
-
-</td>
-<td width="50%" valign="top">
-
-### Sensitivity Finder
-
-A blind aim test that finds your sensitivity from short tracking and flick rounds. It tests each sight the way it's used:
-
-- **Hip-fire**: tracking + flicks
-- **ADS 1x**: SMG/AR tracking + Wingman flicks
-- **ADS 2x**: SMG/AR tracking only
-- **ADS 3x**: marksman and sniper range
-
-[**Open it online →**](https://fithgaming.co.uk/apex-sensitivity/)
-
-</td>
-</tr>
-<tr>
-<td><img src="assets/config-builder.png" alt="Config Builder"></td>
-<td><img src="assets/sensitivity-finder.png" alt="Sensitivity Finder"></td>
-</tr>
-</table>
-
 ## 📁 Configs
 
 | File | What it is | Best for |
@@ -195,11 +218,11 @@ A blind aim test that finds your sensitivity from short tracking and flick round
 | [`videoconfig-game-low.txt`](configs/videoconfig-game-low.txt) | Exactly what the menu writes at Low | Reference |
 | [`videoconfig-game-high.txt`](configs/videoconfig-game-high.txt) | The menu's High, with V-sync and adaptive resolution off | Strong PCs, casual play |
 
-All three are set to 2560 × 1440. Change the four resolution lines to yours, or let the [Config Builder](https://fithgaming.co.uk/apex/) detect it.
+All three are set to 2560 × 1440. Change the four resolution lines to yours, or let the [Config Tool](#config-tool) or [Config Builder](https://fithgaming.co.uk/apex/) do it for you.
 
 ## 🔧 Install
 
-The easy way is the [Desktop Tool](#%EF%B8%8F-desktop-tool). To install a file by hand:
+The easy way is the [Config Tool](#config-tool). To install a file by hand:
 
 1. Close Apex Legends completely.
 2. Press <kbd>Win</kbd> + <kbd>R</kbd>, paste `%USERPROFILE%\Saved Games\Respawn\Apex\local` and press <kbd>Enter</kbd>.
@@ -231,5 +254,5 @@ The easy way is the [Desktop Tool](#%EF%B8%8F-desktop-tool). To install a file b
 | [File format history](docs/file-format-history.md) | Why old configs from 2020–2024 stop working |
 
 <p align="center">
-  <sub>Made by <b>FiTH-g1gGLe</b> · <a href="https://fithgaming.co.uk">fithgaming.co.uk</a> · Not affiliated with Respawn Entertainment or Electronic Arts.</sub>
+  <sub>Made by <b>FiTH-g1gGLe</b> · <a href="https://fithgaming.co.uk">fithgaming.co.uk</a> · Not affiliated with Respawn Entertainment or Electronic Arts. Apex Legends is a trademark of Electronic Arts Inc.</sub>
 </p>
